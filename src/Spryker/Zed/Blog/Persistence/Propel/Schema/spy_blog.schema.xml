@@ -4,7 +4,6 @@
     <table name="spy_blog" phpName="SpyBlog">
         <column name="id_blog" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="name" type="VARCHAR" size="255" required="true"/>
-        <column name="text" type="INTEGER" required="true" defaultValue="0"/>
 
         <id-method-parameter value="spy_blog_pk_seq"/>
     </table>
@@ -13,7 +12,7 @@
         <column name="id_blog_comment" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="fk_blog" required="true" type="INTEGER" />
         <column name="author" type="VARCHAR" size="255" required="true"/>
-        <column name="message" type="INTEGER"/>
+        <column name="message" type="VARCHAR" size="255" required="true" />
 
         <foreign-key name="spy_blog_comment-fk_blog" foreignTable="spy_blog">
             <reference local="fk_blog" foreign="id_blog"/>
