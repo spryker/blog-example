@@ -10,6 +10,7 @@ use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
 use Generated\Shared\Transfer\CriteriaTransfer;
+use Generated\Shared\Transfer\FilterTransfer;
 
 interface BlogRepositoryInterface
 {
@@ -23,11 +24,11 @@ interface BlogRepositoryInterface
     /**
      * @param string $firstName
      *
-     * @param \Generated\Shared\Transfer\CriteriaTransfer $criteriaTransfer
+     * @param \Generated\Shared\Transfer\FilterTransfer $filterTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
      */
-    public function findBlogCollectionByFirstName($firstName, CriteriaTransfer $criteriaTransfer = null);
+    public function findBlogCollectionByFirstName($firstName, FilterTransfer $filterTransfer = null);
 
     /**
      * @param string $firstName

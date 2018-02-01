@@ -10,7 +10,7 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
-use Generated\Shared\Transfer\CriteriaTransfer;
+use Generated\Shared\Transfer\FilterTransfer;
 use Generated\Shared\Transfer\SpyBlogCommentEntityTransfer;
 use Generated\Shared\Transfer\SpyBlogCustomerEntityTransfer;
 use Generated\Shared\Transfer\SpyBlogEntityTransfer;
@@ -121,8 +121,8 @@ class BlogFacadeTest extends Unit
         $this->createBlog();
         $this->createBlog();
 
-        $criteriaTransfer = (new CriteriaTransfer())->setOffset(0)->setLimit(2);
-        $blogCriteriaFilterTransfer->setCriteria($criteriaTransfer);
+        $filterTransfer = (new FilterTransfer())->setOffset(0)->setLimit(2);
+        $blogCriteriaFilterTransfer->setFilter($filterTransfer);
 
         $blogCollection = $blogRepository->filterBlogPosts($blogCriteriaFilterTransfer);
         $this->assertCount(2, $blogCollection);

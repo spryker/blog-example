@@ -9,7 +9,7 @@ namespace Spryker\Zed\Blog\Persistence;
 use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
-use Generated\Shared\Transfer\CriteriaTransfer;
+use Generated\Shared\Transfer\FilterTransfer;
 use Orm\Zed\Blog\Persistence\Map\SpyBlogTableMap;
 use Orm\Zed\Blog\Persistence\SpyBlog;
 use Orm\Zed\Blog\Persistence\SpyBlogComment;
@@ -43,7 +43,7 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
             $blogQuery->filterByText($blogCriteriaFilterTransfer->getText(), Criteria::LIKE);
         }
 
-        $collection = $this->buildQueryFromCriteria($blogQuery, $blogCriteriaFilterTransfer->getCriteria())
+        $collection = $this->buildQueryFromCriteria($blogQuery, $blogCriteriaFilterTransfer->getFilter())
             ->find();
 
         $comments = $this->populateCollectionWithRelation($collection, 'SpyBlogComment');
@@ -58,11 +58,11 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
      * @dependency Customer, Product, Store should be included in composer.json
      *
      * @param string $firstName
-     * @param \Generated\Shared\Transfer\CriteriaTransfer $criteriaTransfer
+     * @param \Generated\Shared\Transfer\FilterTransfer $filterTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
      */
-    public function findBlogCollectionByFirstName($firstName, CriteriaTransfer $criteriaTransfer = null)
+    public function findBlogCollectionByFirstName($firstName, FilterTransfer $filterTransfer = null)
     {
         $customerQuery = $this->queryBlogByName($firstName)
             ->joinWithSpyBlogComment()
@@ -70,7 +70,7 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
                ->joinWithSpyBlogCustomer()
             ->endUse();
 
-        return $this->buildQueryFromCriteria($customerQuery, $criteriaTransfer)->find();
+        return $this->buildQueryFromCriteria($customerQuery, $filterTransfer)->find();
     }
 
     /**
