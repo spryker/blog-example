@@ -21,25 +21,32 @@ interface BlogRepositoryInterface
     public function filterBlogPosts(BlogCriteriaFilterTransfer $blogCriteriaFilterTransfer);
 
     /**
-     * @param string $firstName
+     * @param string $blogName
      *
      * @param \Generated\Shared\Transfer\CriteriaTransfer $criteriaTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
      */
-    public function findBlogCollectionByFirstName($firstName, CriteriaTransfer $criteriaTransfer = null);
+    public function findBlogCollectionByFirstName($blogName, CriteriaTransfer $criteriaTransfer = null);
 
     /**
-     * @param string $firstName
+     * @param string $blogName
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer
      */
-    public function findBlogByName($firstName);
+    public function findBlogByName($blogName);
 
     /**
-     * @param string $firstName
+     * @param string $blogName
      *
      * @return int
      */
-    public function countBlogByName($firstName);
+    public function countBlogByName($blogName);
+
+    /**
+     * @param string $blogName
+     *
+     * @return int
+     */
+    public function findBlogByNameWithCommentCount($blogName);
 }

@@ -10,6 +10,7 @@ use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
 use Generated\Shared\Transfer\CriteriaTransfer;
+use Orm\Zed\Blog\Persistence\Map\SpyBlogCommentTableMap;
 use Orm\Zed\Blog\Persistence\Map\SpyBlogTableMap;
 use Orm\Zed\Blog\Persistence\SpyBlog;
 use Orm\Zed\Blog\Persistence\SpyBlogComment;
@@ -39,11 +40,7 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
             $blogQuery->filterByName($blogCriteriaFilterTransfer->getName(), Criteria::LIKE);
         }
 
-        if ($blogCriteriaFilterTransfer->getText()) {
-            $blogQuery->filterByText($blogCriteriaFilterTransfer->getText(), Criteria::LIKE);
-        }
-
-        $collection = $this->buildQueryFromCriteria($blogQuery, $blogCriteriaFilterTransfer->getCriteria())
+        $collection = $this->buildQueryFromCriteria($blogQuery, $blogCriteriaFilterTransfer->getFilter())
             ->find();
 
         $comments = $this->populateCollectionWithRelation($collection, 'SpyBlogComment');
@@ -57,14 +54,14 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
      *
      * @dependency Customer, Product, Store should be included in composer.json
      *
-     * @param string $firstName
+     * @param string $blogName
      * @param \Generated\Shared\Transfer\CriteriaTransfer $criteriaTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
      */
-    public function findBlogCollectionByFirstName($firstName, CriteriaTransfer $criteriaTransfer = null)
+    public function findBlogCollectionByFirstName($blogName, CriteriaTransfer $criteriaTransfer = null)
     {
-        $customerQuery = $this->queryBlogByName($firstName)
+        $customerQuery = $this->queryBlogByName($blogName)
             ->joinWithSpyBlogComment()
             ->useSpyBlogCommentQuery()
                ->joinWithSpyBlogCustomer()
@@ -74,28 +71,43 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
     }
 
     /**
-     * @param string $firstName
+     * @param string $blogName
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer
      */
-    public function findBlogByName($firstName)
+    public function findBlogByName($blogName)
     {
-        $customerQuery = $this->queryBlogByName($firstName)
+        $customerQuery = $this->queryBlogByName($blogName)
             ->joinWithSpyBlogComment();
 
         return $this->buildQueryFromCriteria($customerQuery)->find()[0];
     }
 
     /**
-     * @param string $firstName
+     * @param string $blogName
      *
      * @return int
      */
-    public function countBlogByName($firstName)
+    public function countBlogByName($blogName)
     {
-        $customerQuery = $this->queryBlogByName($firstName);
+        $customerQuery = $this->queryBlogByName($blogName);
 
         return $this->buildQueryFromCriteria($customerQuery)->count();
+    }
+
+    /**
+     * @param string $blogName
+     *
+     * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer
+     */
+    public function findBlogByNameWithCommentCount($blogName)
+    {
+        $customerQuery = $this->queryBlogByName($blogName)
+            ->joinSpyBlogComment()
+            ->withColumn('COUNT(' . SpyBlogCommentTableMap::COL_ID_BLOG_COMMENT . ')', 'totalComments')
+            ->groupBy(SpyBlogCommentTableMap::COL_ID_BLOG_COMMENT);
+
+        return $this->buildQueryFromCriteria($customerQuery)->findOne();
     }
 
     /**

@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
 use Generated\Shared\Transfer\CriteriaTransfer;
+use Generated\Shared\Transfer\FilterTransfer;
 use Generated\Shared\Transfer\SpyBlogCommentEntityTransfer;
 use Generated\Shared\Transfer\SpyBlogCustomerEntityTransfer;
 use Generated\Shared\Transfer\SpyBlogEntityTransfer;
@@ -100,8 +101,7 @@ class BlogFacadeTest extends Unit
     {
        $blogFacade = $this->createBlogFacade();
        $blogEntityTransfer = (new SpyBlogEntityTransfer())
-            ->setName(self::BLOG_NAME)
-            ->setText('Text');
+            ->setName(self::BLOG_NAME);
 
        $transfer = $blogFacade->save($blogEntityTransfer);
 
@@ -121,8 +121,8 @@ class BlogFacadeTest extends Unit
         $this->createBlog();
         $this->createBlog();
 
-        $criteriaTransfer = (new CriteriaTransfer())->setOffset(0)->setLimit(2);
-        $blogCriteriaFilterTransfer->setCriteria($criteriaTransfer);
+        $filterTransfer = (new FilterTransfer())->setOffset(0)->setLimit(2);
+        $blogCriteriaFilterTransfer->setFilter($filterTransfer);
 
         $blogCollection = $blogRepository->filterBlogPosts($blogCriteriaFilterTransfer);
         $this->assertCount(2, $blogCollection);
@@ -157,6 +157,22 @@ class BlogFacadeTest extends Unit
     }
 
     /**
+     * @return void
+     */
+    public function testFindBlogByNameWithCommentCountShouldReturnBlogNumberOfComments()
+    {
+        $blogRepository = $this->createBlogRepository();
+
+        $this->createBlog();
+
+        $blogTransfer = $blogRepository->findBlogByNameWithCommentCount(self::BLOG_NAME);
+
+        $total = $blogTransfer->getVirtualColumns()['totalComments'];
+
+        $this->assertSame(1, $total);
+    }
+
+    /**
      * @return \Spryker\Zed\Blog\Persistence\BlogRepository
      */
     protected function createBlogRepository()
@@ -188,8 +204,7 @@ class BlogFacadeTest extends Unit
         $blogEntityManager = $this->createBlogEntityManager();
 
         $blogEntityTransfer = (new SpyBlogEntityTransfer())
-            ->setName(self::BLOG_NAME)
-            ->setText('Text');
+            ->setName(self::BLOG_NAME);
 
         $blogCustomerEntityTransfer = new SpyBlogCustomerEntityTransfer();
         $blogCustomerEntityTransfer->setName('test');
