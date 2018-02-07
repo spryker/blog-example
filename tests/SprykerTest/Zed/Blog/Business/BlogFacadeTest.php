@@ -167,7 +167,7 @@ class BlogFacadeTest extends Unit
 
         $blogTransfer = $blogRepository->findBlogByNameWithCommentCount(self::BLOG_NAME);
 
-        $total = $blogTransfer->getVirtualColumns()['totalComments'];
+        $total = $blogTransfer->virtualColumns()['totalComments'];
 
         $this->assertSame(1, $total);
     }
