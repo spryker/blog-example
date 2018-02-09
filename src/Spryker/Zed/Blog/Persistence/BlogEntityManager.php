@@ -25,7 +25,7 @@ class BlogEntityManager extends AbstractEntityManager implements BlogEntityManag
      *
      * @param \Generated\Shared\Transfer\SpyBlogEntityTransfer $blogEntityTransfer
      *
-     * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer
+     * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer|\Spryker\Shared\Kernel\Transfer\EntityTransferInterface
      */
     public function saveBlog(SpyBlogEntityTransfer $blogEntityTransfer)
     {
@@ -37,7 +37,7 @@ class BlogEntityManager extends AbstractEntityManager implements BlogEntityManag
      *
      * @param \Generated\Shared\Transfer\SpyBlogCommentEntityTransfer $blogCommentEntityTransfer
      *
-     * @return \Generated\Shared\Transfer\SpyBlogCommentEntityTransfer
+     * @return \Generated\Shared\Transfer\SpyBlogCommentEntityTransfer|\Spryker\Shared\Kernel\Transfer\EntityTransferInterface
      */
     public function saveBlogComment(SpyBlogCommentEntityTransfer $blogCommentEntityTransfer)
     {

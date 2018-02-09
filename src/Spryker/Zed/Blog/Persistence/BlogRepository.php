@@ -10,6 +10,7 @@ use Generated\Shared\Transfer\BlogCommentTransfer;
 use Generated\Shared\Transfer\BlogCriteriaFilterTransfer;
 use Generated\Shared\Transfer\BlogTransfer;
 use Generated\Shared\Transfer\CriteriaTransfer;
+use Generated\Shared\Transfer\FilterTransfer;
 use Orm\Zed\Blog\Persistence\Map\SpyBlogCommentTableMap;
 use Orm\Zed\Blog\Persistence\Map\SpyBlogTableMap;
 use Orm\Zed\Blog\Persistence\SpyBlog;
@@ -55,11 +56,11 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
      * @dependency Customer, Product, Store should be included in composer.json
      *
      * @param string $blogName
-     * @param \Generated\Shared\Transfer\CriteriaTransfer $criteriaTransfer
+     * @param \Generated\Shared\Transfer\FilterTransfer $filterTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
      */
-    public function findBlogCollectionByFirstName($blogName, CriteriaTransfer $criteriaTransfer = null)
+    public function findBlogCollectionByFirstName($blogName, FilterTransfer $filterTransfer = null)
     {
         $customerQuery = $this->queryBlogByName($blogName)
             ->joinWithSpyBlogComment()
@@ -67,7 +68,7 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
                ->joinWithSpyBlogCustomer()
             ->endUse();
 
-        return $this->buildQueryFromCriteria($customerQuery, $criteriaTransfer)->find();
+        return $this->buildQueryFromCriteria($customerQuery, $filterTransfer)->find();
     }
 
     /**
