@@ -14,6 +14,8 @@ use Generated\Shared\Transfer\FilterTransfer;
 interface BlogRepositoryInterface
 {
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\BlogCriteriaFilterTransfer $blogCriteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer[]
@@ -21,6 +23,8 @@ interface BlogRepositoryInterface
     public function filterBlogPosts(BlogCriteriaFilterTransfer $blogCriteriaFilterTransfer);
 
     /**
+     * @api
+     *
      * @param string $blogName
      *
      * @param \Generated\Shared\Transfer\FilterTransfer $filterTransfer
@@ -30,6 +34,8 @@ interface BlogRepositoryInterface
     public function findBlogCollectionByFirstName($blogName, FilterTransfer $filterTransfer = null);
 
     /**
+     * @api
+     *
      * @param string $blogName
      *
      * @return \Generated\Shared\Transfer\SpyBlogEntityTransfer
@@ -37,6 +43,8 @@ interface BlogRepositoryInterface
     public function findBlogByName($blogName);
 
     /**
+     * @api
+     *
      * @param string $blogName
      *
      * @return int
@@ -44,6 +52,8 @@ interface BlogRepositoryInterface
     public function countBlogByName($blogName);
 
     /**
+     * @api
+     *
      * @param string $blogName
      *
      * @return int
